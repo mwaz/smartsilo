@@ -1,19 +1,16 @@
-var serialport = require('serialport')
+var SerialPort = require('serialport').SerialPort;
 var request = require('request');
 
-var sp= new serialport.SerialPort("COM4",
-{
-	baudrate:9600,
-	parser:serialport.parsers.readline("\n")
+var sp= new SerialPort("COM3");
 
-});
+
 
 sp.on("open", function ()
 {
 	console.log("Ready to listen....");
 	sp.on('data', function(data){
 		console.log(data.toString());
-		var dataJson= JSON.parse(data.toString());
+		var dataJson = JSON.parse(data.toString());
 
 		console.log("making a temp request");
 		console.log(dataJson.Temperature);
