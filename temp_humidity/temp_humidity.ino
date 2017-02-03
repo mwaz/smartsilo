@@ -28,12 +28,12 @@ if (isnan(h)|| isnan (t)){
   Serial.println("Failed to read from Dhtll sensor");
   return;
 }
- Serial.print(" ( \"Humidity\": " );
+ Serial.print(" {\"Humidity\": ");
  Serial.print(h);
 
-  Serial.print(", \"Temperature\": " );
+  Serial.print(",\"Temperature\": ");
  Serial.print(t);
- Serial.println(" ) ");
+ Serial.println(" } ");
  
 
  

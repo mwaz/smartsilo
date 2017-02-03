@@ -24,8 +24,8 @@ sp.on("open", function ()
 		 	},
 
 		 	form: {
-		 		field1: JSON.stringfy(dataJson.Temperature),
-		 		field2: JSON.stringfy(dataJson.Humidity)
+		 		field1: JSON.stringify(dataJson.Temperature),
+		 		field2: JSON.stringify(dataJson.Humidity)
 		 	}
 		 },
 		 function(error, response, body){
