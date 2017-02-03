@@ -102,8 +102,9 @@ void loop() {
   }
   
   // prepare GET string
-  String getStr = "GET /update?api_key=";
+ String getStr = "GET /update?api_key=";
   getStr += apiKey;
+// String getStr = "GET https://api.thingspeak.com/update?api_key=YFQJHA81LPGWGYBI&field1=";
   /*if(i==0)
   {
     Serial.println("1");
