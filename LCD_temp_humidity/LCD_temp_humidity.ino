@@ -51,10 +51,10 @@ boolean thingSpeakWrite(float value1, float value2){
   String getStr = "GET /update?api_key=";   // prepare GET string
   getStr += apiKey;
   
-  getStr +="&field1=";
-  getStr += String(value1);
-  getStr +="&field2=";
-  getStr += String(value2);
+  getStr +="&field1=";  // Temperature field
+  getStr += String(value1); //Convering temperature field to string 
+  getStr +="&field2=";  // Humidity /field
+  getStr += String(value2); // Coverting humidity to string
   // getStr +="&field3=";
   // getStr += String(value3);
   // ...
@@ -62,7 +62,7 @@ boolean thingSpeakWrite(float value1, float value2){
 
   // send data length
   cmd = "AT+CIPSEND=";
-  cmd += String(getStr.length());
+  cmd += String(getStr.length()); //combine data from all the strings from the arduino
   Serial1.println(cmd);
   if (DEBUG)  Serial.println(cmd);
   
