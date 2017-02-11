@@ -14,7 +14,7 @@ sp.on("open", function ()
 		var dataJson = JSON.parse(data.toString());
 
 		console.log("making a temp request");
-		console.log(dataJson.Temperature);
+		console.log("Temperature",dataJson.Temperature);
 
 		 request({
 		 	url:'https://api.thingspeak.com/update',
@@ -25,8 +25,8 @@ sp.on("open", function ()
 		 	},
 
 		 	form: {
-		 		field1: JSON.stringify(dataJson.Temperature),
-		 		field2: JSON.stringify(dataJson.Humidity)
+		 		//field1: JSON.stringify("Temperature",dataJson.Temperature),
+		 		//field2: JSON.stringify("Humidity",dataJson.Humidity)
 		 	}
 		 },
 		 function(error, response, body){
@@ -34,7 +34,7 @@ sp.on("open", function ()
 		 		console.log(error);
 	}
 		 	else{
-		 		console.log(response.statusCode,body);
+		 		console.log(reaponse.statusCode,body);
 		 	}
 		 
 		 });

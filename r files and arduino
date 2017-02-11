@@ -1,0 +1,5 @@
+> f <- file("/dev/cu.usbmodem3a21", open="r")
+> scan(f, n=1)
+Read 1 item
+[1] 20.8
+> close(f)
