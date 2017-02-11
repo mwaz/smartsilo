@@ -1,22 +1,10 @@
-
-#include <Wire.h>
-#include "rgb_lcd.h"
-
+#include <Wire.h> // wire library is used with the lcd display
+#include "rgb_lcd.h" //declaration of the lcd
 rgb_lcd lcd;
-
-
-#include <DHT.h>        //Attention: For new  DHT11 version  library you will need the Adafruit_Sensor library
-                        //Download from here: https://github.com/adafruit/Adafruit_Sensor
-
-
-
-//Attention: For new  DHT11 version  libraries you will need the Adafruit_Sensor library
-//Download from here:https://github.com/adafruit/Adafruit_Sensor
-//and install to Arduino software
-
-#define DHTPIN 6                // Connect the signal pin of DHT11 sensor to digital pin 5
-#define DHTTYPE DHT11 
-DHT dht(DHTPIN, DHTTYPE);
+#include <DHT.h>             //got this from here: https://github.com/adafruit/Adafruit_Sensor
+#define DHTPIN 6                // Connect the signal pin of DHT11 sensor to digital pin 6
+#define DHTTYPE DHT11         // gloabal declaration of the DHT11 module and type 
+DHT dht(DHTPIN, DHTTYPE);     // initialization if the DHT pin and the type
 
 
 String apiKey = "YFQJHA81LPGWGYBI";     // replace with your channel's thingspeak WRITE API key
@@ -24,13 +12,15 @@ String apiKey = "YFQJHA81LPGWGYBI";     // replace with your channel's thingspea
 String ssid="Free 2017";    // Wifi network SSID
 String password ="wifi3210";  // Wifi network password
 
-boolean DEBUG=true;
-
+boolean DEBUG=true; //sets the serial monitor to provide errors if it encounter any during the execution
+// Initializing colors of the LCD display
 const int colorR = 255;
 const int colorG = 0;
 const int colorB = 0;
 
 //======================================================================== showResponce
+
+// function checks if there is any serial read on the serial monitor then prints it on the LCD screen
 void showResponse(int waitTime){
     long t=millis();
     char c;
@@ -44,6 +34,8 @@ void showResponse(int waitTime){
 }
 
 //========================================================================
+
+// Function to connect to the thingspeak channel through authenticatiomn
 boolean thingSpeakWrite(float value1, float value2){
   String cmd = "AT+CIPSTART=\"TCP\",\"";                  // TCP connection
   cmd += "184.106.153.149";                               // api.thingspeak.com
@@ -51,7 +43,7 @@ boolean thingSpeakWrite(float value1, float value2){
   Serial1.println(cmd);
   if (DEBUG) Serial.println(cmd);
   if(Serial1.find("Error")){
-    if (DEBUG) Serial.println("AT+CIPSTART error");
+    if (DEBUG) Serial.println("AT+CIPSTART error");  // AT command to send data to thingspeak channel
     return false;
   }
   
@@ -99,13 +91,7 @@ void setup()
   dht.begin();          // Start DHT sensor
   
   Serial1.begin(115200);  // enable software serial
-                          // Your esp8266 module's speed is probably at 115200. 
-                          // For this reason the first time set the speed to 115200 or to your esp8266 configured speed 
-                          // and upload. Then change to 9600 and upload again
-  
-  //Serial1.println("AT+CIOBAUD=9600");         // set esp8266 serial speed to 9600 bps
-  //Serial1.println("AT+UART_CUR=9600,8,1,0,0");         // set esp8266 serial speed to 9600 bps
-  
+                         
   showResponse(1000);
   
   Serial1.println("AT+RST");         // reset esp8266
@@ -126,7 +112,6 @@ void setup()
     
 }
 
-
 // ====================================================================== loop
 
 void loop() 
@@ -144,23 +129,17 @@ void loop()
            thingSpeakWrite(t,h);                                      // Write values to thingspeak
       }
   
-    
-  // thingspeak needs 15 sec delay between updates,     
- 
-  
     // set the cursor to column 0, line 1
     // (note: line 1 is the second row, since counting begins with 0):
     lcd.setCursor(0, 1);
-    // print the number of seconds since reset:
-
-    // Print a message to the LCD.
     
-     //lcd.print("Temperature is", t "Humidity is", h );
+   // Print a temperature and humidity to the LCD.
+    //lcd.print("Temperature is", t "Humidity is", h );
     lcd.print("T="+String(t)+ "\n");
     lcd.print("H="+String(h));
 
    
- delay(20000);  
+ delay(20000);     // thingspeak needs 15 sec delay between updates,     
 }
 
 
