@@ -5,7 +5,8 @@ rgb_lcd lcd;
 #define DHTPIN 6                // Connect the signal pin of DHT11 sensor to digital pin 6
 #define DHTTYPE DHT11         // gloabal declaration of the DHT11 module and type 
 DHT dht(DHTPIN, DHTTYPE);     // initialization if the DHT pin and the type
-
+const int pinRed = 9;    // initialize the danger pin
+const int pinNorm = 8; // initialize normal pin
 
 String apiKey = "YFQJHA81LPGWGYBI";     // replace with your channel's thingspeak WRITE API key
 
@@ -87,7 +88,8 @@ void setup()
    
     DEBUG=true;           // enable debug serial
   Serial.begin(9600); 
-  
+  pinMode(pinRed, INPUT);  // initialize the Danger Pin
+   pinMode(pinNorm, INPUT); // initialize the Normal  Pin
   dht.begin();          // Start DHT sensor
   
   Serial1.begin(115200);  // enable software serial
@@ -128,6 +130,20 @@ void loop()
           if (DEBUG) Serial.println("Humidity="+String(h)+" %");
            thingSpeakWrite(t,h);                                      // Write values to thingspeak
       }
+      
+      if (t>29||t<25||h>50)
+      {
+        digitalWrite(pinRed, HIGH);
+        digitalWrite(pinNorm, LOW); 
+         
+      }
+      else
+      {
+       digitalWrite(pinNorm, HIGH);
+       digitalWrite(pinRed, LOW);   
+      }
+      
+    
   
     // set the cursor to column 0, line 1
     // (note: line 1 is the second row, since counting begins with 0):
