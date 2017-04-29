@@ -8,7 +8,7 @@ rgb_lcd lcd;
 
 #define trigPin 5
 #define echoPin 4
-int binHeight = 15;       //silo height is 18 cm
+int binHeight = 11.5;       //silo height is 18 cm
 float binPercent;
 float binPercenttwo;
 float binpercentThree;
@@ -147,8 +147,8 @@ void loop()
 {
   // Calculate percentages of Silo fill
   int testDistance = CheckDistance();           /// get object distance using ping
-   float binPercent = 18 - testDistance;
-  float binPercenttwo = binPercent / 18;
+   float binPercent = 11.5 - testDistance;
+  float binPercenttwo = binPercent / 11.5;
   float binpercentThree =  binPercenttwo * 100;
 
   int siloHeight = binpercentThree;
@@ -174,9 +174,9 @@ void loop()
     if (DEBUG)  Serial.println("Temp=" + String(t) + " *C");
     if (DEBUG) Serial.println("Humidity=" + String(h) + " %");
 
-    if (siloHeight>0){
+   if (siloHeight>0){
        thingSpeakWrite(t, h, siloHeight);                                     // Write values to thingspeak
-    }
+   }
    
   }
 
