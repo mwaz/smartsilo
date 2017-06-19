@@ -8,11 +8,10 @@ rgb_lcd lcd;
 
 #define trigPin 5
 #define echoPin 4
-int binHeight = 11.5;       //silo height is 18 cm
-float binPercent;
-float binPercenttwo;
-float binpercentThree;
-
+//ultrasonic variables
+int maximumRange = 50;
+long duration, distance, d1,d2,d3;
+int testDistance=15;
 
 const int pinRed = 9;        // initialize the danger pin
 const int pinNorm = 8;      // initialize normal pin
@@ -97,10 +96,13 @@ void setup()
 
   DEBUG = true;         // enable debug serial
 
-  //Initializing the Pins of the Ultrasonic Sensor (Trig pin as the output and Echo pin as the input)
-  pinMode(trigPin, OUTPUT);
-  pinMode(echoPin, INPUT);
+//Initializing the Pins of the Ultrasonic Sensor (Trig pin as the output and Echo pin as the input)
+  Serial.begin (9600);
+  pinMode (trigPin, OUTPUT);
+  pinMode (echoPin, INPUT );
 
+
+    
   Serial.begin(9600);                  // starts the serial
   pinMode(pinRed, INPUT);             // initialize the Danger Pin
   pinMode(pinNorm, INPUT);           // initialize the Normal  Pin
@@ -130,37 +132,35 @@ void setup()
 
 int CheckDistance()
 {
- long duration, distance;
-  digitalWrite(trigPin, LOW);  // Added this line
-  delayMicroseconds(2); // Added this line
-  digitalWrite(trigPin, HIGH);
-//  delayMicroseconds(1000); - Removed this line
-  delayMicroseconds(10); // Added this line
-  digitalWrite(trigPin, LOW);
-  duration = pulseIn(echoPin, HIGH);
-  distance = (duration/2) / 29.1;
-  return distance;
+   digitalWrite(trigPin,LOW);
+    delayMicroseconds(2);
+    
+    digitalWrite(trigPin,HIGH);
+    delayMicroseconds(10);
+    
+    duration=pulseIn (echoPin,HIGH);
+    
+    distance= duration/58.2;
+    delay (1000);
+    return distance;
 }
 // ====================================================================== loop
 
 void loop()
 {
   // Calculate percentages of Silo fill
-  int testDistance = CheckDistance();           /// get object distance using ping
-   float binPercent = 11.5 - testDistance;
-  float binPercenttwo = binPercent / 11.5;
-  float binpercentThree =  binPercenttwo * 100;
+  int d3 = CheckDistance();           /// get object distance using ping
+  d1=testDistance-d3;
+  d2=(d1 *6.66666667);
 
-  int siloHeight = binpercentThree;
 
-  if (binpercentThree > 90) /// if silo is more than 90% full
+  if (d2 > 90) /// if silo is more than 90% full
   {
     Serial.println("Silo is almost full");
   }
-  Serial.print(binPercent);
-  Serial.println("Empty");
-  Serial.print(testDistance);
-  Serial.println(" cm");
+   Serial.println(d2);
+   Serial.println("Percent full");
+
   delay(500);
 
 
@@ -174,8 +174,8 @@ void loop()
     if (DEBUG)  Serial.println("Temp=" + String(t) + " *C");
     if (DEBUG) Serial.println("Humidity=" + String(h) + " %");
 
-   if (siloHeight>0){
-       thingSpeakWrite(t, h, siloHeight);                                     // Write values to thingspeak
+   if (d2>0){
+       thingSpeakWrite(t, h, d2);                                     // Write values to thingspeak
    }
    
   }
@@ -206,9 +206,4 @@ void loop()
 
   delay(20000);     // thingspeak needs 15 sec delay between updates,
 }
-
-
-
-
-
 
