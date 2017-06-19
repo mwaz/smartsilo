@@ -18,7 +18,7 @@ const int pinNorm = 8;      // initialize normal pin
 
 String apiKey = "YFQJHA81LPGWGYBI";     //channel's thingspeak WRITE API key
 
-String ssid = "Free 2017";  // Wifi network SSID
+String ssid = "Free Wifi";  // Wifi network SSID
 String password = "wifi3210"; // Wifi network password
 
 boolean DEBUG = true; //sets the serial monitor to provide errors if it encounter any during the execution
